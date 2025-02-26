@@ -22,7 +22,6 @@ body.dark {
     color: #fff;
 }
 
-/* Animasi Pembuka dengan Logo */
 .opening-animation {
     position: fixed;
     top: 0;
@@ -37,13 +36,9 @@ body.dark {
 }
 
 .opening-logo {
-    width: 150px; /* Sesuaikan ukuran logo */
+    width: 150px;
     height: 150px;
     animation: fadeInScale 3s ease, fadeOut 1s ease 3s;
-}
-
-body.dark .opening-animation {
-    background-color: #111;
 }
 
 @keyframes fadeInScale {
@@ -65,12 +60,6 @@ body.dark .opening-animation {
         opacity: 0;
     }
 }
-
-/*@keyframes fadeOut *//*{
-    0% { opacity: 1; }
-    80% { opacity: 1; }
-    100% { opacity: 0; }
-}*/
 
 /* Header */
 header {
@@ -131,6 +120,22 @@ body.dark .version-dropdown {
 
 body.dark .theme-switch {
     color: #fff;
+}
+
+/* Styling untuk tombol login dan logout */
+.auth-btn {
+    background-color: #007bff;
+    color: #fff;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    transition: all 0.3s ease; /* Biar animasinya smooth kayak tema switch */
+}
+
+body.dark .auth-btn {
+    background-color: #0056b3;
 }
 
 /* Main Content (Chatbot) */
@@ -300,6 +305,22 @@ body.dark .code-block {
 
 body.dark .copy-btn {
     color: #66b3ff;
+}
+
+/* Styling untuk tombol login dan logout */
+.auth-btn {
+    background-color: #007bff;
+    color: #fff;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    transition: all 0.3s ease; /* Biar animasinya smooth kayak tema switch */
+}
+
+body.dark .auth-btn {
+    background-color: #0056b3;
 }
 
 /* Footer */
