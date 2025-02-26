@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minerva AI</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <!-- Animasi Pembuka dengan Logo -->
+    <div class="opening-animation">
+        <img src="/assets/logo-intro.png" alt="Minerva AI Logo" class="opening-logo">
+    </div>
+
+    <!-- Header -->
+    <header>
+        <img src="/assets/logo-h.png" alt="Minerva AI Logo" class="logo">
+        <h1>Minerva AI</h1>
+        <div class="header-right">
+            <div class="version">
+                <span>v1.0(beta)</span>
+                <button class="version-btn"><i class="fas fa-chevron-down"></i></button>
+                <div class="version-dropdown">
+                    <p>v1.5(soon)</p>
+                    <p>v2.0(soon)</p>
+                    <p>v2.5super(soon)</p>
+                </div>
+            </div>
+            <button id="themeSwitch" class="theme-switch"><i class="fas fa-moon"></i></button>
+        </div>
+    </header>
+
+    <!-- Konten Utama (Chatbot) -->
+    <main>
+        <div class="chatbot-container">
+            <div class="chatbox" id="chatbox"></div>
+            <div class="input-area">
+                <img src="/assets/logo-f.png" alt="Minerva AI Logo" class="input-logo">
+                <input type="text" id="userInput" placeholder="Ketik pesan Anda...">
+                <button id="sendBtn"><i class="fas fa-paper-plane"></i></button>
+                <button id="clearChatBtn"><i class="fas fa-broom"></i></button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>Minerva AI dikembangkan oleh RLC™ as RoogLiteCore from Pandansari</p>
+        <p class="p2">Copyright 2025. Hak Cipta Dilindungi.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,367 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+/* Reset dan Gaya Dasar */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #fff;
+    color: #000;
+    transition: all 0.3s ease;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+body.dark {
+    background-color: #111;
+    color: #fff;
+}
+
+/* Animasi Pembuka dengan Logo */
+.opening-animation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    z-index: 1000;
+}
+
+.opening-logo {
+    width: 150px; /* Sesuaikan ukuran logo */
+    height: 150px;
+    animation: fadeInScale 3s ease, fadeOut 1s ease 3s;
+}
+
+body.dark .opening-animation {
+    background-color: #111;
+}
+
+@keyframes fadeInScale {
+    0% {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+/*@keyframes fadeOut *//*{
+    0% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { opacity: 0; }
+}*/
+
+/* Header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #f0f0f0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 100%;
+}
+
+body.dark header {
+    background-color: #1a1a1a;
+}
+
+.logo {
+    width: 40px;
+    height: 40px;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.version {
+    position: relative;
+}
+
+.version-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    border-radius: 5px;
+}
+
+body.dark .version-dropdown {
+    background-color: #1a1a1a;
+}
+
+.version:hover .version-dropdown {
+    display: block;
+}
+
+.theme-switch {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    color: #000;
+}
+
+body.dark .theme-switch {
+    color: #fff;
+}
+
+/* Main Content (Chatbot) */
+main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    width: 100%;
+    padding: 10px;
+}
+
+.chatbot-container {
+    width: 100%;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    background-color: transparent;
+    border-radius: 10px;
+}
+
+.chatbox {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.chatbox p {
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 10px;
+    max-width: 70%;
+}
+
+.chatbox .user {
+    background-color: #007bff;
+    color: #fff;
+    align-self: flex-end;
+    margin-left: auto;
+}
+
+.chatbox .ai {
+    background-color: #f1f1f1;
+    color: #000;
+    align-self: flex-start;
+}
+
+.chatbox .typing {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 14px;
+    color: #666;
+}
+
+.chatbox .typing .dot {
+    width: 6px;
+    height: 6px;
+    background-color: #666;
+    border-radius: 50%;
+    animation: blink 1.4s infinite both;
+}
+
+.chatbox .typing .dot:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.chatbox .typing .dot:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+body.dark .chatbox .ai {
+    background-color: #2a2a2a;
+    color: #fff;
+}
+
+body.dark .chatbox .typing {
+    color: #ccc;
+}
+
+body.dark .chatbox .typing .dot {
+    background-color: #ccc;
+}
+
+@keyframes blink {
+    0% { opacity: 0.2; }
+    20% { opacity: 1; }
+    100% { opacity: 0.2; }
+}
+
+/* Input Area */
+.input-area {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border-radius: 10px;
+}
+
+body.dark .input-area {
+    background-color: #1a1a1a;
+}
+
+.input-logo {
+    width: 40px;
+    height: 40px;
+}
+
+#userInput {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: 'Poppins', sans-serif;
+}
+
+body.dark #userInput {
+    background-color: #2a2a2a;
+    border-color: #555;
+    color: #fff;
+}
+
+#sendBtn, #clearChatBtn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    color: #000;
+}
+
+body.dark #sendBtn, body.dark #clearChatBtn {
+    color: #fff;
+}
+
+/* Gaya untuk blok kode */
+.code-block {
+    position: relative;
+    background-color: #f5f5f5;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 10px 0;
+    font-family: monospace;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+/* Gaya untuk tombol copy */
+.copy-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    color: #007bff;
+}
+
+/* Sesuaikan untuk tema gelap */
+body.dark .code-block {
+    background-color: #333;
+    color: #fff;
+}
+
+body.dark .copy-btn {
+    color: #66b3ff;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #f0f0f0;
+    width: 100%;
+}
+
+footer .p2 {
+  font-size: 10px;
+}
+
+body.dark footer {
+    background-color: #1a1a1a;
+}
+
+/* Responsif untuk Semua Perangkat */
+@media only screen and (max-width: 480px) {
+    header {
+        padding: 10px;
+    }
+
+    .chatbot-container {
+        margin: 5px;
+        height: calc(100vh - 120px);
+    }
+
+    .input-area {
+        padding: 5px;
+        padding-bottom: env(safe-area-inset-bottom, 10px);
+    }
+
+    .logo, .input-logo {
+        width: 30px;
+        height: 30px;
+    }
+
+    #userInput {
+        font-size: 14px;
+    }
+
+    #sendBtn, #clearChatBtn {
+        font-size: 18px;
+    }
+}
+
+@media only screen and (min-width: 481px) and (max-width: 768px) {
+    .chatbot-container {
+        margin: 10px;
+        height: calc(100vh - 140px);
+    }
+
+    .input-area {
+        padding-bottom: env(safe-area-inset-bottom, 10px);
+    }
+}
+
+@media only screen and (min-width: 769px) {
+    .chatbot-container {
+        margin: 20px auto;
+        height: calc(100vh - 160px);
+    }
+}
