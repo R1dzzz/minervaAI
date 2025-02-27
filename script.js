@@ -96,7 +96,6 @@ async function addMessageToChat(sender, message) {
     });
 }
 
-
 // Fungsi untuk Menambahkan Animasi Typing
 function addTypingAnimation() {
     const typingElement = document.createElement("p");
@@ -152,16 +151,14 @@ async function fetchGeminiResponse(userMessage) {
 window.addEventListener("load", () => {
     addMessageToChat(
         "ai",
-        "Say Hi to Minerva AI from Pandansari 🤙🗿"
+        "Say Hello for Minerva AI from Pandansari 🤙🗿"
     );
 
     // Sembunyikan animasi pembuka setelah 3 detik
     setTimeout(() => {
       const openingAnimation = document.querySelector('.opening-animation');
-openingAnimation.addEventListener('animationend', () => {
-    openingAnimation.style.display = 'none';
-});
-        /*const openingAnimation = document.querySelector(".opening-animation");
-        openingAnimation.style.display = "none";**/
+      openingAnimation.addEventListener('animationend', () => {
+          openingAnimation.style.display = 'none';
+      });
     }, 3000);
 });
