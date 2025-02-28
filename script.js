@@ -151,7 +151,7 @@ async function fetchGeminiResponse(userMessage) {
 window.addEventListener("load", () => {
     addMessageToChat(
         "ai",
-        "Say Hello for Minerva AI from Pandansari 🤙🗿"
+        "Say Hi to Minerva AI from Pandansari 🤙"
     );
 
     // Sembunyikan animasi pembuka setelah 3 detik
