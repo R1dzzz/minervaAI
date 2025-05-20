@@ -5,57 +5,110 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minerva AI</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body>
-  <div class="opening-animation">
-    <img src="/assets/logo-intro.png" alt="Minerva AI Logo" class="opening-logo"></div>
+<body class="dark">
+    <div class="opening-animation dark">
+        <img src="/assets/logo-intro.png" alt="Minerva AI Logo" class="opening-logo">
+    </div>
 
-    <!-- Header -->
+    <!-- Header/Navbar -->
     <header>
-        <img src="/assets/logo-h.png" alt="Minerva AI Logo" class="logo">
-        <h1>Minerva AI</h1>
+        <div class="header-left">
+            <img src="/assets/logo-h.png" alt="Minerva AI Logo" class="logo">
+            <h1>Minerva AI</h1>
+            <span class="version-badge">v1.5</span>
+        </div>
         <div class="header-right">
-            <div class="version">
-                <span>v1.0(beta)</span>
-                <button class="version-btn"><i class="fas fa-chevron-down"></i></button>
-                <div class="version-dropdown">
-                    <p>v1.5(soon)</p>
-                    <p>v2.0(soon)</p>
-                    <p>v2.5super(soon)</p>
-                </div>
-            </div>
-            <button id="themeSwitch" class="theme-switch"><i class="fas fa-moon"></i></button>
-            <!-- Tambahan untuk login -->
-            <span id="user-info"></span>
-            <button id="google-login-btn" class="auth-btn">Login</button>
-            <button id="sign-out-btn" class="auth-btn" style="display: none;">Logout</button>
+            <button id="examples-btn" class="nav-btn">
+                <i class="fas fa-lightbulb"></i>
+                <span>Examples</span>
+            </button>
+            <button id="settings-btn" class="nav-btn">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </button>
+            <button id="themeSwitch" class="theme-switch">
+                <i class="fas fa-sun"></i>
+            </button>
         </div>
     </header>
 
-    <!-- Konten Utama (Chatbot) -->
+    <!-- Side Panel for Examples -->
+    <div class="side-panel" id="examples-panel">
+        <div class="panel-header">
+            <h3>Try these examples</h3>
+            <button class="close-panel"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="example-list">
+            <div class="example-item">
+                <p>"Tell me about artificial intelligence"</p>
+            </div>
+            <div class="example-item">
+                <p>"Write a short story about a robot"</p>
+            </div>
+            <div class="example-item">
+                <p>"How to learn programming?"</p>
+            </div>
+            <div class="example-item">
+                <p>"Create a workout plan for beginners"</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Side Panel for Settings -->
+    <div class="side-panel" id="settings-panel">
+        <div class="panel-header">
+            <h3>Settings</h3>
+            <button class="close-panel"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="settings-content">
+            <div class="setting-item">
+                <span>Response Speed</span>
+                <div class="setting-control">
+                    <span>Fast</span>
+                    <label class="switch">
+                        <input type="checkbox" id="responseSpeed">
+                        <span class="slider round"></span>
+                    </label>
+                    <span>Precise</span>
+                </div>
+            </div>
+            <div class="setting-item">
+                <span>Chat History</span>
+                <div class="setting-control">
+                    <button id="clearChatBtn" class="settings-btn">
+                        <i class="fas fa-trash-alt"></i> Clear Chat
+                    </button>
+                </div>
+            </div>
+            <div class="setting-item">
+                <span>About Minerva AI</span>
+                <p class="settings-info">Minerva AI v1.5 developed by RLC™ as RoogLiteCore from Pandansari.</p>
+                <p class="settings-info">Copyright 2025. All Rights Reserved.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content (Chatbot) -->
     <main>
         <div class="chatbot-container">
             <div class="chatbox" id="chatbox"></div>
-            <div class="input-area">
-                <img src="/assets/logo-f.png" alt="Minerva AI Logo" class="input-logo">
-                <input type="text" id="userInput" placeholder="Ketik pesan Anda...">
-                <button id="sendBtn"><i class="fas fa-paper-plane"></i></button>
-                <button id="clearChatBtn"><i class="fas fa-broom"></i></button>
+            <div class="input-container">
+                <div class="input-area">
+                    <img src="/assets/logo-f.png" alt="Minerva AI Logo" class="input-logo">
+                    <div class="textarea-wrapper">
+                        <textarea id="userInput" placeholder="Message Minerva..." rows="1"></textarea>
+                    </div>
+                    <button id="sendBtn"><i class="fas fa-paper-plane"></i></button>
+                </div>
+                <div class="input-footer">
+                    <span class="disclaimer">Minerva AI may produce inaccurate information. Verify important information.</span>
+                </div>
             </div>
         </div>
     </main>
 
-    <!-- Footer -->
-    <footer>
-        <p>Minerva AI dikembangkan oleh RLC™ as RoogLiteCore from Pandansari</p>
-        <p class="p2">Copyright 2025. Hak Cipta Dilindungi.</p>
-    </footer>
-
-<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js"></script>
-<script src="auth.js"></script>
-<script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
