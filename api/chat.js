@@ -27,12 +27,19 @@ export default async function handler(req, res) {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          contents: messages,
-          generationConfig: {
-            temperature: 0.7,
-            maxOutputTokens: 1024
-          }
-        })
+  contents: [
+    {
+      role: "user",
+      parts: [
+        { text: messages }
+      ]
+    }
+  ],
+  generationConfig: {
+    temperature: 0.7,
+    maxOutputTokens: 1024
+  }
+})
       }
     );
 
