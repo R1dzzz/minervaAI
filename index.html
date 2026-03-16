@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MinervaAI — v2.0</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body class="dark">
+
+  <!-- ══ Opening Screen ══ -->
+  <div class="opening-screen" id="opening-screen">
+    <div class="opening-logo-wrap">
+      <img class="opening-logo-img" src="assets/images/logo-intro.png" alt="MinervaAI" />
+    </div>
+    <div class="opening-brand">Minerva<span>AI</span></div>
+    <div class="opening-loader">
+      <div class="opening-loader-bar"></div>
+    </div>
+  </div>
+
+  <!-- ══ Sidebar Overlay (mobile) ══ -->
+  <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+
+  <!-- ══ User Dropdown ══ -->
+  <div class="dropdown-overlay" id="dropdown-overlay" onclick="closeDropdown()"></div>
+  <div class="dropdown-menu" id="user-dropdown" style="display:none;">
+    <div class="dropdown-item" onclick="openProfileInfo()">
+      <i class="fas fa-user"></i> Profile
+    </div>
+    <div class="dropdown-item" onclick="clearChatHistory()">
+      <i class="fas fa-trash-alt"></i> Clear Chat
+    </div>
+    <div class="dropdown-sep"></div>
+    <div class="dropdown-item danger" onclick="handleLogout()">
+      <i class="fas fa-sign-out-alt"></i> Sign Out
+    </div>
+  </div>
+
+  <!-- ══ App Layout ══ -->
+  <div class="app-layout">
+
+    <!-- Left Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <img class="sidebar-logo" src="assets/images/logo-h.png" alt="MinervaAI" />
+        <span class="sidebar-brand">MinervaAI</span>
+        <button class="sidebar-toggle" onclick="closeSidebar()" title="Close sidebar">
+          <i class="fas fa-sidebar"></i>
+        </button>
+      </div>
+
+      <!-- Search -->
+      <div class="sidebar-search">
+        <div class="search-input-wrap">
+          <i class="fas fa-magnifying-glass"></i>
+          <input type="text" placeholder="Search chats…" id="history-search" oninput="filterHistory(this.value)" />
+          <span class="search-kbd">⌘K</span>
+        </div>
+      </div>
+
+      <!-- Nav -->
+      <nav class="sidebar-nav">
+        <div class="nav-item active" id="nav-ai-chat" onclick="switchView('chat')">
+          <i class="fas fa-message"></i>
+          <span>AI Chat</span>
+        </div>
+        <div class="nav-item" onclick="switchView('examples')">
+          <i class="fas fa-lightbulb"></i>
+          <span>Prompts</span>
+        </div>
+        <div class="nav-item" onclick="switchView('history')">
+          <i class="fas fa-clock-rotate-left"></i>
+          <span>History</span>
+        </div>
+
+        <div class="nav-section-label">Settings &amp; Help</div>
+        <div class="nav-item" onclick="switchView('settings')">
+          <i class="fas fa-gear"></i>
+          <span>Settings</span>
+        </div>
+        <div class="nav-item" onclick="openAbout()">
+          <i class="fas fa-circle-info"></i>
+          <span>About</span>
+        </div>
+      </nav>
+
+      <!-- Footer -->
+      <div class="sidebar-footer">
+        <!-- Theme toggle -->
+        <div class="theme-row">
+          <button class="theme-btn active" id="theme-light" onclick="setTheme('light')">
+            <i class="fas fa-sun"></i> Light
+          </button>
+          <button class="theme-btn" id="theme-dark" onclick="setTheme('dark')">
+            <i class="fas fa-moon"></i> Dark
+          </button>
+        </div>
+
+        <!-- User profile -->
+        <div class="user-profile" id="user-profile-btn" onclick="toggleUserDropdown(event)">
+          <div class="user-avatar" id="user-avatar">?</div>
+          <div class="user-info">
+            <div class="user-name" id="user-display-name">Loading…</div>
+            <div class="user-email" id="user-display-email">—</div>
+          </div>
+          <button class="user-menu-btn"><i class="fas fa-ellipsis"></i></button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-content">
+
+      <!-- Header -->
+      <header class="main-header">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <button class="header-btn" id="sidebar-open-btn" onclick="openSidebar()" style="display:none;">
+            <i class="fas fa-bars"></i>
+          </button>
+          <span class="main-title" id="main-title">AI Chat</span>
+        </div>
+        <div class="header-actions">
+          <button class="header-btn" onclick="clearChatHistory()">
+            <i class="fas fa-rotate-left"></i>
+            <span>New Chat</span>
+          </button>
+          <button class="header-btn primary" onclick="toggleHistoryPanel()">
+            <i class="fas fa-clock-rotate-left"></i>
+            <span>History</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Chat Area -->
+      <div class="chat-area" id="chat-area">
+        <!-- Welcome State -->
+        <div class="welcome-state" id="welcome-state">
+          <p class="welcome-greeting" id="welcome-greeting">Hello, User 👋</p>
+          <h2 class="welcome-title">Welcome to <span>MinervaAI</span></h2>
+          <p class="welcome-subtitle">
+            Get started by typing a message below. Not sure where to start?
+          </p>
+
+          <div class="quick-actions">
+            <div class="quick-action-card" onclick="usePrompt('Explain artificial intelligence in simple terms')">
+              <div class="quick-action-icon qa-purple"><i class="fas fa-brain"></i></div>
+              <span class="quick-action-text">Explain AI concepts</span>
+              <div class="quick-action-add"><i class="fas fa-plus"></i></div>
+            </div>
+            <div class="quick-action-card" onclick="usePrompt('Write a short creative story about a robot discovering music')">
+              <div class="quick-action-icon qa-blue"><i class="fas fa-pen-fancy"></i></div>
+              <span class="quick-action-text">Write a story</span>
+              <div class="quick-action-add"><i class="fas fa-plus"></i></div>
+            </div>
+            <div class="quick-action-card" onclick="usePrompt('Create a beginner workout plan for the next 4 weeks')">
+              <div class="quick-action-icon qa-green"><i class="fas fa-dumbbell"></i></div>
+              <span class="quick-action-text">Build a workout plan</span>
+              <div class="quick-action-add"><i class="fas fa-plus"></i></div>
+            </div>
+            <div class="quick-action-card" onclick="usePrompt('How do I learn JavaScript from scratch? Give me a roadmap')">
+              <div class="quick-action-icon qa-pink"><i class="fas fa-code"></i></div>
+              <span class="quick-action-text">Learn to code</span>
+              <div class="quick-action-add"><i class="fas fa-plus"></i></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Chatbox -->
+        <div class="chatbox" id="chatbox" style="display:none;"></div>
+      </div>
+
+      <!-- Input Section -->
+      <div class="input-section">
+        <div class="input-box">
+          <div class="input-row">
+            <textarea
+              id="user-input"
+              placeholder="Message MinervaAI…"
+              rows="1"
+              onInput="handleInputChange()"
+              onKeyDown="handleKeyDown(event)"
+            ></textarea>
+            <button class="send-btn" id="send-btn" onclick="sendMessage()" disabled>
+              <i class="fas fa-paper-plane"></i>
+            </button>
+          </div>
+          <div class="input-toolbar">
+            <button class="toolbar-btn" onclick="document.getElementById('user-input').focus()">
+              <i class="fas fa-paperclip"></i>
+              <span>Attach</span>
+            </button>
+            <button class="toolbar-btn" onclick="showPromptPanel()">
+              <i class="fas fa-wand-magic-sparkles"></i>
+              <span>Browse Prompts</span>
+            </button>
+            <span class="char-count" id="char-count">0 / 3,000</span>
+          </div>
+        </div>
+        <p class="input-disclaimer">
+          MinervaAI v2.0 may produce inaccurate information. Verify important details. &nbsp;·&nbsp; RLC Team
+        </p>
+      </div>
+    </div>
+
+    <!-- Right History Panel -->
+    <aside class="history-panel" id="history-panel">
+      <div class="history-header">
+        <span class="history-title">Conversations</span>
+        <span class="history-count" id="history-count">0</span>
+        <button class="history-menu-btn" onclick="clearAllHistory()">
+          <i class="fas fa-trash"></i>
+        </button>
+      </div>
+
+      <button class="new-chat-btn" onclick="clearChatHistory()">
+        <i class="fas fa-plus"></i> New Conversation
+      </button>
+
+      <div class="history-list" id="history-list">
+        <div class="history-empty">
+          <i class="fas fa-message-slash"></i>
+          <p class="history-empty-text">No conversations yet.<br/>Start chatting to see history here.</p>
+        </div>
+      </div>
+    </aside>
+
+  </div><!-- /app-layout -->
+
+  <!-- Toast container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- App Modules -->
+  <script src="js/auth.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/chat.js"></script>
+</body>
+</html>

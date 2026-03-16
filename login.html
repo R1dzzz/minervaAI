@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign In — MinervaAI</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body class="dark auth-page">
+
+  <div class="auth-card">
+    <!-- Logo -->
+    <div class="auth-logo">
+      <img src="assets/images/logo-h.png" alt="MinervaAI" />
+      <span class="auth-logo-text">MinervaAI</span>
+    </div>
+
+    <h1 class="auth-heading">Welcome back</h1>
+    <p class="auth-subheading">Sign in to continue your conversations</p>
+
+    <!-- Alert -->
+    <div class="auth-alert" id="auth-alert">
+      <i class="fas fa-circle-exclamation"></i>
+      <span id="auth-alert-msg"></span>
+    </div>
+
+    <!-- Form -->
+    <div class="form-group">
+      <label class="form-label" for="email">Email</label>
+      <input
+        class="form-input"
+        type="email"
+        id="email"
+        placeholder="you@example.com"
+        autocomplete="email"
+      />
+      <span class="form-error" id="email-error">Please enter a valid email.</span>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="password">Password</label>
+      <input
+        class="form-input"
+        type="password"
+        id="password"
+        placeholder="Your password"
+        autocomplete="current-password"
+      />
+      <span class="form-error" id="password-error">Password is required.</span>
+    </div>
+
+    <button class="btn-primary" id="login-btn" onclick="handleLogin()">
+      <div class="btn-spinner" id="login-spinner"></div>
+      <span id="login-btn-text">Sign In</span>
+    </button>
+
+    <div class="auth-divider">or</div>
+
+    <div class="auth-footer">
+      Don't have an account?
+      <a href="register.html">Create one →</a>
+    </div>
+  </div>
+
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    // Redirect if already logged in
+    checkAuthRedirect();
+
+    async function handleLogin() {
+      const email    = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const btn      = document.getElementById('login-btn');
+      const spinner  = document.getElementById('login-spinner');
+      const btnText  = document.getElementById('login-btn-text');
+      const alert    = document.getElementById('auth-alert');
+      const alertMsg = document.getElementById('auth-alert-msg');
+
+      // Clear errors
+      hideAlert();
+      document.getElementById('email-error').classList.remove('visible');
+      document.getElementById('password-error').classList.remove('visible');
+
+      // Validate
+      let valid = true;
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        document.getElementById('email-error').classList.add('visible');
+        valid = false;
+      }
+      if (!password) {
+        document.getElementById('password-error').classList.add('visible');
+        valid = false;
+      }
+      if (!valid) return;
+
+      // Loading state
+      btn.disabled = true;
+      spinner.classList.add('active');
+      btnText.textContent = 'Signing in…';
+
+      const { error } = await signIn(email, password);
+
+      if (error) {
+        showAlert(error.message || 'Invalid email or password.');
+        btn.disabled = false;
+        spinner.classList.remove('active');
+        btnText.textContent = 'Sign In';
+      } else {
+        btnText.textContent = 'Redirecting…';
+        window.location.href = 'index.html';
+      }
+    }
+
+    function showAlert(msg) {
+      const el = document.getElementById('auth-alert');
+      document.getElementById('auth-alert-msg').textContent = msg;
+      el.classList.remove('success');
+      el.classList.add('error');
+    }
+    function hideAlert() {
+      const el = document.getElementById('auth-alert');
+      el.classList.remove('error', 'success');
+    }
+
+    // Enter key support
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Enter') handleLogin();
+    });
+  </script>
+</body>
+</html>

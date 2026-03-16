@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create Account — MinervaAI</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body class="dark auth-page">
+
+  <div class="auth-card">
+    <!-- Logo -->
+    <div class="auth-logo">
+      <img src="assets/images/logo-h.png" alt="MinervaAI" />
+      <span class="auth-logo-text">MinervaAI</span>
+    </div>
+
+    <h1 class="auth-heading">Create account</h1>
+    <p class="auth-subheading">Join MinervaAI — your intelligent assistant</p>
+
+    <!-- Alert -->
+    <div class="auth-alert" id="auth-alert">
+      <i class="fas fa-circle-exclamation"></i>
+      <span id="auth-alert-msg"></span>
+    </div>
+
+    <!-- Form -->
+    <div class="form-group">
+      <label class="form-label" for="name">Full Name</label>
+      <input
+        class="form-input"
+        type="text"
+        id="name"
+        placeholder="e.g. Farid"
+        autocomplete="name"
+      />
+      <span class="form-error" id="name-error">Please enter your name.</span>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="email">Email</label>
+      <input
+        class="form-input"
+        type="email"
+        id="email"
+        placeholder="you@example.com"
+        autocomplete="email"
+      />
+      <span class="form-error" id="email-error">Please enter a valid email.</span>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="password">Password</label>
+      <input
+        class="form-input"
+        type="password"
+        id="password"
+        placeholder="At least 6 characters"
+        autocomplete="new-password"
+      />
+      <span class="form-error" id="password-error">Password must be at least 6 characters.</span>
+    </div>
+
+    <button class="btn-primary" id="register-btn" onclick="handleRegister()">
+      <div class="btn-spinner" id="register-spinner"></div>
+      <span id="register-btn-text">Create Account</span>
+    </button>
+
+    <div class="auth-divider">or</div>
+
+    <div class="auth-footer">
+      Already have an account?
+      <a href="login.html">Sign in →</a>
+    </div>
+  </div>
+
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    // Redirect if already logged in
+    checkAuthRedirect();
+
+    async function handleRegister() {
+      const name     = document.getElementById('name').value.trim();
+      const email    = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const btn      = document.getElementById('register-btn');
+      const spinner  = document.getElementById('register-spinner');
+      const btnText  = document.getElementById('register-btn-text');
+
+      // Clear errors
+      hideAlert();
+      ['name-error','email-error','password-error'].forEach(id => {
+        document.getElementById(id).classList.remove('visible');
+      });
+
+      // Validate
+      let valid = true;
+      if (!name) {
+        document.getElementById('name-error').classList.add('visible');
+        valid = false;
+      }
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        document.getElementById('email-error').classList.add('visible');
+        valid = false;
+      }
+      if (!password || password.length < 6) {
+        document.getElementById('password-error').classList.add('visible');
+        valid = false;
+      }
+      if (!valid) return;
+
+      // Loading
+      btn.disabled = true;
+      spinner.classList.add('active');
+      btnText.textContent = 'Creating account…';
+
+      const { error } = await signUp(email, password, name);
+
+      if (error) {
+        showAlert(error.message || 'Could not create account. Please try again.');
+        btn.disabled = false;
+        spinner.classList.remove('active');
+        btnText.textContent = 'Create Account';
+      } else {
+        showSuccess('Account created! Redirecting…');
+        setTimeout(() => { window.location.href = 'index.html'; }, 1500);
+      }
+    }
+
+    function showAlert(msg) {
+      const el = document.getElementById('auth-alert');
+      document.getElementById('auth-alert-msg').textContent = msg;
+      el.classList.remove('success');
+      el.classList.add('error');
+    }
+    function showSuccess(msg) {
+      const el = document.getElementById('auth-alert');
+      document.getElementById('auth-alert-msg').textContent = msg;
+      el.classList.remove('error');
+      el.classList.add('success');
+    }
+    function hideAlert() {
+      document.getElementById('auth-alert').classList.remove('error','success');
+    }
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Enter') handleRegister();
+    });
+  </script>
+</body>
+</html>
