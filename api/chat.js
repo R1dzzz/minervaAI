@@ -8,33 +8,52 @@ export default async function handler(req, res) {
 
     const { messages } = req.body;
 
+    if (!messages) {
+      return res.status(400).json({ error: "Messages are required" });
+    }
+
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          contents: messages
+          contents: messages,
+          generationConfig: {
+            temperature: 0.7,
+            maxOutputTokens: 1024
+          }
         })
       }
     );
 
     const data = await response.json();
 
-    console.log("GEMINI RESPONSE:", data);
+    // Debug log (lihat di Vercel logs kalau ada masalah)
+    console.log("Gemini response:", data);
 
-    res.status(200).json(data);
+    if (data.error) {
+      return res.status(500).json({
+        error: data.error.message || "Gemini API error"
+      });
+    }
 
-  } catch (err) {
+    const text =
+      data?.candidates?.[0]?.content?.parts?.[0]?.text ||
+      "No response from AI";
 
-    console.error(err);
+    return res.status(200).json({ text });
 
-    res.status(500).json({
-      error: "Server error"
+  } catch (error) {
+
+    console.error("Server error:", error);
+
+    return res.status(500).json({
+      error: "Failed to contact AI service"
     });
 
   }
 
-}
+        }
