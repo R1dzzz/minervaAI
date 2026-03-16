@@ -16,30 +16,25 @@ export default async function handler(req, res) {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          contents: messages,
-          generationConfig: {
-            temperature: 0.7,
-            maxOutputTokens: 1024
-          }
+          contents: messages
         })
       }
     );
 
     const data = await response.json();
 
-    const text =
-      data?.candidates?.[0]?.content?.parts?.[0]?.text ||
-      "No response from AI";
+    console.log("GEMINI RESPONSE:", data);
 
-    res.status(200).json({ text });
+    res.status(200).json(data);
 
-  } catch (error) {
+  } catch (err) {
 
-    console.error("Gemini API Error:", error);
+    console.error(err);
 
     res.status(500).json({
-      error: "AI request failed"
+      error: "Server error"
     });
 
   }
+
 }
