@@ -12,36 +12,43 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: "Messages are required" });
     }
 
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${process.env.GEMINI_API_KEY}}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          contents: messages,
-          generationConfig: {
-            temperature: 0.7,
-            maxOutputTokens: 1024
+    // Convert Gemini format → Claude format
+    const lastUserMessage = messages
+      .filter(m => m.role === "user")
+      .map(m => m.parts[0].text)
+      .join("\n");
+
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": process.env.CLAUDE_API_KEY,
+        "anthropic-version": "2023-06-01"
+      },
+      body: JSON.stringify({
+        model: "claude-3-haiku-20240307",
+        max_tokens: 1024,
+        messages: [
+          {
+            role: "user",
+            content: lastUserMessage
           }
-        })
-      }
-    );
+        ]
+      })
+    });
 
     const data = await response.json();
 
-    // Debug log (lihat di Vercel logs kalau ada masalah)
-    console.log("Gemini response:", data);
+    console.log("Claude response:", data);
 
     if (data.error) {
       return res.status(500).json({
-        error: data.error.message || "Gemini API error"
+        error: data.error.message || "Claude API error"
       });
     }
 
     const text =
-      data?.candidates?.[0]?.content?.parts?.[0]?.text ||
+      data?.content?.[0]?.text ||
       "No response from AI";
 
     return res.status(200).json({ text });
@@ -56,4 +63,4 @@ export default async function handler(req, res) {
 
   }
 
-        }
+  }
