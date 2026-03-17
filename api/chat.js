@@ -12,43 +12,38 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: "Messages are required" });
     }
 
-    // Convert Gemini format → Claude format
-    const lastUserMessage = messages
-      .filter(m => m.role === "user")
-      .map(m => m.parts[0].text)
-      .join("\n");
+    // Convert format dari Gemini → OpenRouter (OpenAI style)
+    const formattedMessages = messages.map(m => ({
+      role: m.role === "model" ? "assistant" : m.role,
+      content: m.parts?.[0]?.text || ""
+    }));
 
-    const response = await fetch("https://api.anthropic.com/v1/messages", {
+    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
-        "x-api-key": process.env.CLAUDE_API_KEY,
-        "anthropic-version": "2023-06-01"
+        "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
+        "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        model: "claude-3-haiku-20240307",
-        max_tokens: 1024,
-        messages: [
-          {
-            role: "user",
-            content: lastUserMessage
-          }
-        ]
+        model: "openrouter/auto", 
+        messages: formattedMessages,
+        temperature: 0.7,
+        max_tokens: 1024
       })
     });
 
     const data = await response.json();
 
-    console.log("Claude response:", data);
+    console.log("OpenRouter response:", data);
 
     if (data.error) {
       return res.status(500).json({
-        error: data.error.message || "Claude API error"
+        error: data.error.message || "OpenRouter API error"
       });
     }
 
     const text =
-      data?.content?.[0]?.text ||
+      data?.choices?.[0]?.message?.content ||
       "No response from AI";
 
     return res.status(200).json({ text });
@@ -63,4 +58,4 @@ export default async function handler(req, res) {
 
   }
 
-  }
+}
